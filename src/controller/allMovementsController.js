@@ -4,7 +4,7 @@ const { SendEmail } = require('./emailController')
 const setMovements = async (req, res) => {
     try {
         await Register.insertMany(req.body.thisBody)
-        SendEmail(req.body.thisBody)
+        SendEmail(req.body.thisBody, req.body.accion)
         res.send("Exito!")
     } catch (err) {
         res.status(500).json({ message: err.message })
