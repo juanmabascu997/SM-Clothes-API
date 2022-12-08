@@ -25,7 +25,7 @@ const SendEmail = async (req, accion) => {
           ],
           Subject: `Tienes movimientos de cuenta`,
           TextPart: `Hola! Estos serian los movimientos de stock que acabamos de registrar a nombre de${req[0].editor_name}`,
-          HTMLPart: `<h2>Hola! Estos serian los movimientos de stock que acabamos de registrar a nombre de ${req[0].editor_name}</h2><br />${req.map(e => {return `<div><p> SKU: ${e.description} - Stock ${accion === "Sumar" ? "añadido" : "sustraido"} añadido: ${e.stock_modificate}</p><br /></div>`})} <h3>A continuacion generamos el adjunto de lo realizado</h3>`
+          HTMLPart: `<h2>Hola! Estos serian los movimientos de stock que acabamos de registrar a nombre de ${req[0].editor_name}</h2><br />${req.map(e => {return `<div><p> SKU: ${e.description} - Stock ${accion === "Sumar" ? "añadido" : "sustraido"}: ${e.stock_modificate}</p><br /></div>`})} <h3>A continuacion generamos el adjunto de lo realizado</h3>`
         }
       ]
     })
