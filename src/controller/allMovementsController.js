@@ -1,12 +1,11 @@
 const Register = require('../modules/Register')
-
+const { SendEmail } = require('./emailController')
 
 const setMovements = async (req, res) => {
     try {
-        const register = new Register(...req.body.thisBody)
-        await register.save()
-
-        res.send(register)
+        await Register.insertMany(req.body.thisBody)
+        SendEmail(req.body.thisBody)
+        res.send("Exito!")
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
