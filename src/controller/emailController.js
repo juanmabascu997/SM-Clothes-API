@@ -25,7 +25,33 @@ const SendEmail = async (req, accion) => {
           ],
           Subject: `Tienes movimientos de cuenta`,
           TextPart: `Hola! Estos serian los movimientos de stock que acabamos de registrar a nombre de${req[0].editor_name}`,
-          HTMLPart: `<h2>Hola! Estos serian los movimientos de stock que acabamos de registrar a nombre de ${req[0].editor_name}</h2><br />${req.map(e => {return `<div><p> SKU: ${e.description} - Stock ${accion === "Sumar" ? "añadido" : "sustraido"}: ${e.stock_modificate}</p><br /></div>`})} <h3>A continuacion generamos el adjunto de lo realizado</h3>`
+          HTMLPart: `<h3><strong>Hola!</strong></h3><p>Estos serian los movimientos de stock que acabamos de registrar a nombre de ${req[0].editor_name}</p><br />
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th style="text-align: center;">Stock ${accion === "Sumar" ? "añadido" : "sustraido"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${req.map(e => {
+                return `<div>
+                        <tr>
+                          <td>${e.description}</td>
+                          <td style="text-align: center;">${e.stock_modificate}</td>
+                        </tr></div>\\n`})}
+            </tbody>
+          </table>
+          <h3>A continuacion generamos el adjunto de lo realizado</h3>
+          <a href="https://smclothes.com.ar/">Politicas de privacidad</a>
+          `,
+          Attachments: [
+            {
+              ContentType: "text/plain",
+              Filename: "test.txt",
+              Base64Content: "VGhpcyBpcyB5b3VyIGF0dGFjaGVkIGZpbGUhISEK"
+            }
+          ]
         }
       ]
     })
@@ -35,7 +61,7 @@ const SendEmail = async (req, accion) => {
         console.log(result.body)
       })
       .catch((err) => {
-        console.log(err.statusCode)
+        console.log(err.ErrorMessage)
       })
 }
 
