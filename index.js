@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const connectDB = require('./src/config/db')
 const allMovementsRoutes = require('./src/routes/allMovementsRoutes')
 const usersRoutes = require('./src/routes/usersRoutes')
+const productsRoutes = require('./src/routes/productsRoutes')
 
 const cors = require('cors');
 
@@ -18,6 +19,7 @@ app.use(cors());
 
 app.use('/api/allMovements', allMovementsRoutes)
 app.use('/api/users', usersRoutes)
+app.use('/api/products', productsRoutes)
 
 
 const PORT = process.env.PORT || 3001
