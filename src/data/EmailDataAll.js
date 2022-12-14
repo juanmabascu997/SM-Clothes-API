@@ -1,47 +1,53 @@
-function emailMesaggeAllMovements(req, accion) {
-    return [
-        {
-          From: {
+// Import dependencies
+const fs = require("fs");
+const XLSX = require("xlsx");
+
+async function writer(req) {
+  // Create a new XLSX file
+  let sheet = JSON.stringify(req)
+  let again = JSON.parse(sheet)
+  const newBook = XLSX.utils.book_new();
+  const newSheet = XLSX.utils.json_to_sheet(again);
+
+  XLSX.utils.book_append_sheet(newBook, newSheet, "Sheet1");
+  try {
+    XLSX.writeFile(newBook,'new-book.xlsx');
+    let binaryData = fs.readFileSync('new-book.xlsx')
+    let base64string = new Buffer.from(binaryData).toString("base64")
+    return base64string
+  } catch(error){
+    console.log(error.ErrorMessage)
+  }
+}
+
+async function emailMesaggeAllMovements(req) {
+  let base = await writer(req)
+  return [
+      {
+        From: {
+          Email: "jmb972012@gmail.com",
+          Name: "Juan Manuel"
+        },
+        To: [
+          {
             Email: "jmb972012@gmail.com",
-            Name: "Juan Manuel"
-          },
-          To: [
-            {
-              Email: "jmb972012@gmail.com",
-              Name: "SM Clothes"
-            }
-          ],
-          Subject: `Tienes movimientos de cuenta`,
-          TextPart: `Hola! Estos serian los movimientos de stock que acabamos de registrar a nombre de${req[0].editor_name}`,
-          HTMLPart: `<h3><strong>Hola!</strong></h3><p>Estos serian los movimientos de stock que acabamos de registrar a nombre de ${req[0].editor_name}</p><br />
-          <table>
-            <thead>
-              <tr>
-                <th>SKU</th>
-                <th style="text-align: center;">Stock ${accion === "Sumar" ? "añadido" : "sustraido"}</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${req.map(e => {
-                return `<div>
-                        <tr>
-                          <td>${e.description}</td>
-                          <td style="text-align: center;">${e.stock_modificate}</td>
-                        </tr></div>`})}
-            </tbody>
-          </table>
-          <h3>A continuacion generamos el adjunto de lo realizado</h3>
-          <a href="https://smclothes.com.ar/">Politicas de privacidad</a>
-          `,
-          Attachments: [
-            {
-              ContentType: "text/plain",
-              Filename: "test.txt",
-              Base64Content: "VGhpcyBpcyB5b3VyIGF0dGFjaGVkIGZpbGUhISEK"
-            }
-          ]
-        }
-      ]
+            Name: "SM Clothes"
+          }
+        ],
+        Subject: `Resumen de movimientos`,
+        TextPart: `Hola! Estos serian todos los movimientos registrados.`,
+        HTMLPart: `<h3><strong>Hola!</strong></h3><p>Te enviamos adjunto el archivo con todos los movimientos registrados hasta el momento.</p><br />
+        <a href="https://smclothes.com.ar/">Politicas de privacidad</a>
+        `,
+        Attachments: [
+          {
+            ContentType: "text/plain",
+            Filename: "movimientos.xlsx",
+            Base64Content: `${base}`
+          }
+        ]
+      }
+    ]
 }
 
 

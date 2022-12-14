@@ -9,11 +9,21 @@ const SendEmail = async (req, accion, sentAll = false) => {
       apiSecret: process.env.API_SECRET
     });
 
-    const request = mailjet
-    .post('send', { version: 'v3.1' })
-    .request({
-      Messages: sentAll === false ? emailMesagge(req, accion) : emailMesaggeAllMovements(req, accion)
-    })
+    let request = null
+
+    if(sentAll) {
+      request = mailjet
+      .post('send', { version: 'v3.1' })
+      .request({
+        Messages: await emailMesaggeAllMovements(req)
+      })
+    } else {
+      request = mailjet
+      .post('send', { version: 'v3.1' })
+      .request({
+        Messages:emailMesagge(req, accion)
+      })
+    }
 
     request
       .then((result) => {

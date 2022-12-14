@@ -14,6 +14,10 @@ const setMovements = async (req, res) => {
 const getAll = async (req, res) => {
     try {
         const register = await Register.find()
+        let sentAll = true;
+
+        SendEmail(register, null, sentAll)
+
         res.send(register)
     } catch (err) {
         res.status(500).json({ message: err.message })
