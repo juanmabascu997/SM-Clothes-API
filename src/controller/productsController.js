@@ -6,8 +6,8 @@ const fs = require('fs')
 
 var data = qs.stringify({
   'grant_type': 'client_credentials',
-  'client_id': 'sm.clothes2@gmail.com',
-  'client_secret': 'monteagudo655' 
+  'client_id': process.env.CLIENT_ID,
+  'client_secret': process.env.PASSWORD 
 });
 
 var config = {
