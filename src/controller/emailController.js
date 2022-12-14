@@ -4,8 +4,8 @@ const Mailjet = require('node-mailjet');
 
 const SendEmail = async (req, accion) => {
     const mailjet = new Mailjet({
-      apiKey:'3b511d6cac017aac652b25b17fb6360e',
-      apiSecret:'03e4d4ed563823933f6b4eb1f0d6b60a'
+      apiKey: process.env.API_KEY,
+      apiSecret: process.env.API_SECRET
     });
 
     const request = mailjet
@@ -39,7 +39,7 @@ const SendEmail = async (req, accion) => {
                         <tr>
                           <td>${e.description}</td>
                           <td style="text-align: center;">${e.stock_modificate}</td>
-                        </tr></div>\\n`})}
+                        </tr></div>`})}
             </tbody>
           </table>
           <h3>A continuacion generamos el adjunto de lo realizado</h3>
