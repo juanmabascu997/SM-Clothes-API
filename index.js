@@ -6,6 +6,7 @@ const connectDB = require('./src/config/db')
 const allMovementsRoutes = require('./src/routes/allMovementsRoutes')
 const usersRoutes = require('./src/routes/usersRoutes')
 const productsRoutes = require('./src/routes/productsRoutes')
+const inventarioRoutes = require('./src/routes/inventarioRoutes')
 
 const cors = require('cors');
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use('/api/allMovements', allMovementsRoutes)
 app.use('/api/users', usersRoutes)
 app.use('/api/products', productsRoutes)
+app.use('/api/inventario', inventarioRoutes)
 
 
 const PORT = process.env.PORT || 3001
