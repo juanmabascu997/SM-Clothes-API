@@ -3,6 +3,7 @@ const { SendEmail } = require('./emailController')
 
 const setMovements = async (req, res) => {
     try {
+        console.log(req.body.accion);
         await Register.insertMany(req.body.thisBody)
         SendEmail(req.body.thisBody, req.body.accion)
         res.send("Exito!")
