@@ -24,7 +24,7 @@ const SendEmail = async (req) => {
 
 const sendInventario = async (req, res) => {
     try {
-        let response = await SendEmail(req.body.body)
+        let response = await SendEmail(req.thisBody)
         res.send(response)
     } catch (err) {
         console.log(err)
