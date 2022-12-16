@@ -1,4 +1,6 @@
 function emailMesagge(req, accion) {
+    console.log(accion);
+
     return [
         {
           From: {
