@@ -13,6 +13,10 @@ const registerSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    action: {
+        type: String,
+        required: true
+    },
     date: {
         type: String,
         default: false

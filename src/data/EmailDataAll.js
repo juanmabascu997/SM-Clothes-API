@@ -23,17 +23,17 @@ async function writer(req) {
 async function emailMesaggeAllMovements(req) {
   let base = await writer(req)
   return [
-      {
-        From: {
-          Email: "jmb972012@gmail.com",
-          Name: "Juan Manuel"
-        },
-        To: [
-          {
-            Email: "jmb972012@gmail.com",
-            Name: "SM Clothes"
-          }
-        ],
+    {
+      From: {
+        Email: process.env.EMAIL_FROM,
+        Name: "Juan Manuel"
+      },
+      To: [
+        {
+          Email: process.env.EMAIL_TO,
+          Name: "SM Clothes"
+        }
+      ],
         Subject: `Resumen de movimientos`,
         TextPart: `Hola! Estos serian todos los movimientos registrados.`,
         HTMLPart: `<h3><strong>Hola!</strong></h3><p>Te enviamos adjunto el archivo con todos los movimientos registrados hasta el momento.</p><br />

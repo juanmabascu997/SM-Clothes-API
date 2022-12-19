@@ -23,17 +23,17 @@ async function writer(req) {
 async function emailDataInventario(req) {
   let base = await writer(req)
   return [
-      {
-        From: {
-          Email: "jmb972012@gmail.com",
-          Name: "Juan Manuel"
-        },
-        To: [
-          {
-            Email: "jmb972012@gmail.com",
-            Name: "SM Clothes"
-          }
-        ],
+    {
+      From: {
+        Email: process.env.EMAIL_FROM,
+        Name: "Juan Manuel"
+      },
+      To: [
+        {
+          Email: process.env.EMAIL_TO,
+          Name: "SM Clothes"
+        }
+      ],
         Subject: `Inventario`,
         TextPart: `Hola! Adjuntamos el Inventario realizado.`,
         HTMLPart: `<h3><strong>Hola!</strong></h3><p>Adjuntamos el Inventario realizado.</p><br />

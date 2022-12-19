@@ -4,12 +4,12 @@ function emailMesagge(req, accion) {
     return [
         {
           From: {
-            Email: "jmb972012@gmail.com",
+            Email: process.env.EMAIL_FROM,
             Name: "Juan Manuel"
           },
           To: [
             {
-              Email: "jmb972012@gmail.com",
+              Email: process.env.EMAIL_TO,
               Name: "SM Clothes"
             }
           ],
