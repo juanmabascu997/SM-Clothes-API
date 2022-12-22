@@ -1,11 +1,9 @@
 function emailMesagge(req, accion) {
-    console.log(accion);
-
     return [
         {
           From: {
-            Email: process.env.EMAIL_FROM,
-            Name: "Juan Manuel"
+            Email: process.env.EMAIL_TO,
+            Name: "SM Clothes App"
           },
           To: [
             {

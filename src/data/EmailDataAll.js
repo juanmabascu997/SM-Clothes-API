@@ -1,6 +1,8 @@
 // Import dependencies
 const fs = require("fs");
-const XLSX = require("xlsx");
+const XLSX = require("xlsx");  
+const { uploadFile } = require('../config/createFile')
+const path = require('path');
 
 async function writer(req) {
   // Create a new XLSX file
@@ -12,6 +14,8 @@ async function writer(req) {
   XLSX.utils.book_append_sheet(newBook, newSheet, "Sheet1");
   try {
     XLSX.writeFile(newBook,'new-book.xlsx');
+    const filePath = path.join(__dirname, '../../new-book.xlsx');
+    await uploadFile(filePath,'todos-los-movimientos')
     let binaryData = fs.readFileSync('new-book.xlsx')
     let base64string = new Buffer.from(binaryData).toString("base64")
     return base64string
@@ -25,8 +29,8 @@ async function emailMesaggeAllMovements(req) {
   return [
     {
       From: {
-        Email: process.env.EMAIL_FROM,
-        Name: "Juan Manuel"
+        Email: process.env.EMAIL_TO,
+        Name: "SM Clothes App"
       },
       To: [
         {
