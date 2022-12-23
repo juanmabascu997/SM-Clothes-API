@@ -27,7 +27,7 @@ const SendEmail = async (req, accion, sentAll = false) => {
 
     request
       .then((result) => {
-        console.log('Correo enviado exitosamente')
+        console.log('Correo enviado exitosamente ', result)
       })
       .catch((err) => {
         console.log(err.ErrorMessage)
