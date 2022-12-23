@@ -6,6 +6,7 @@ const path = require('path');
 
 async function writer(req) {
   // Create a new XLSX file
+  
   let sheet = JSON.stringify(req)
   let again = JSON.parse(sheet)
   const newBook = XLSX.utils.book_new();
@@ -30,7 +31,7 @@ async function emailDataInventario(req) {
     {
       From: {
         Email: process.env.EMAIL_FROM,
-        Name: "Juan Manuel"
+        Name: "SM Clothes API"
       },
       To: [
         {

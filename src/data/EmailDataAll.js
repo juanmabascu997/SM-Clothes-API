@@ -29,8 +29,8 @@ async function emailMesaggeAllMovements(req) {
   return [
     {
       From: {
-        Email: process.env.EMAIL_TO,
-        Name: "SM Clothes App"
+        Email: process.env.EMAIL_FROM,
+        Name: "SM Clothes API"
       },
       To: [
         {

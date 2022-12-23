@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// const uri = "mongodb+srv://juanmabascu:Juanma12@cluster0.3mbzcp9.mongodb.net/?retryWrites=true&w=majority";
  
 const uri = process.env.MONGO_URI;
 
