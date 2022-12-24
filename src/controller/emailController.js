@@ -21,7 +21,7 @@ const SendEmail = async (req, accion, sentAll = false) => {
       request = mailjet
       .post('send', { version: 'v3.1' })
       .request({
-        Messages: await emailMesagge(req, accion)
+        Messages: emailMesagge(req, accion)
       })
     }
 
