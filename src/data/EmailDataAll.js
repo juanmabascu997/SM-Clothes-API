@@ -14,8 +14,8 @@ async function writer(req) {
   XLSX.utils.book_append_sheet(newBook, newSheet, "Sheet1");
   try {
     XLSX.writeFile(newBook,'new-book.xlsx');
-    const filePath = path.join(__dirname, '../../new-book.xlsx');
-    await uploadFile(filePath,'todos-los-movimientos')
+    // const filePath = path.join(__dirname, '../../new-book.xlsx');
+    // await uploadFile(filePath,'todos-los-movimientos')
     let binaryData = fs.readFileSync('new-book.xlsx')
     let base64string = new Buffer.from(binaryData).toString("base64")
     return base64string
