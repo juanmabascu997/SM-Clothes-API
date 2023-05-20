@@ -30,8 +30,20 @@ const getToken = async () => {
 const getProducts = async (req, res) => {
     try {
         let productsTotal = [];
-        for(let i = 1; i <= 27; i++){
-            let token = 'Rc-hw-BDMv-_7IzcYMDXrK-QKJEjFiG3EgA_P059naZM3a0GW6dFuk4Jbo61cgqz8WMQKWL3H0LKE_nxO87nwEZV_UEFQs0H5Uurt162mtuHQkRW7DQ-1CVrVAj-kJl77k1jV23X_zxN5CJEbejXt9XM8Zw8T7r_Yp14SG5_1AK4zZKkWbCYRuzWaNnV-dpTQ_JuPxF188StegIgpZTG1wvdwbMP8K0NPnzdS_jSbE0QIr836nmseXPzO9-sRKX9gerEim4BMWEKuRFy2QuQfr_mGKlbn8AzdlG2fbj3TotV9fOIV56hxa_fnYTtlCQX_OuHjKmNpt57R3O_5EPLsxVI3Ur6x2tVYb2JJp0eo_SIEjcVSHktovnwNh3yAS4X2nN1K82zBCOnye4cYbW0r-qLoiwunmTRJfi-1fQHlXqwdD8ZJd0kKCy7SrCBKDa30tycMAWo3zu_KakWyEU8HoOMOdpjTxpWnYIuYk7FxjXuecy2Y0zE1BmYtsICDs_cQ2r7T2NgxEXnREEH1TjNtkw7tj83rA36jcUVysQxf_IR0a6qUeM9j2NKfxB9cRIvQlsJ41bNu7BFcEjAX2Vh6A'
+
+        let token = 'NincVTNhVt7h0ytO_BeS4CBBtBSqxWvqlfPG11SX7ixiiuv9jw3QLEL15umzc_aoZzCox133Mz54VWBX0LIIj0o2iIbAe33-XpBRHY6GgoB4R4ovRsevI6pFGmj0MmcoBxOINfGj1hzfLuFLlDZdsk_b1iXy7N4VRQoWMLGl2UNYUgA_6ijQmVfauskbZfBevpflzGVL8Zgz8dIyU90cE07T23v3LuxVbNy9saQSmSRrsvvv9X4f-zejg3LBIuxkSRQb7K93WoHKo2ZszBz6i1Pr6Qw-pW0JiBpFZ1OPk17lpbUuJ3OW4WsG3JureB0x66JFQjP32GpwmtNHXt6vkBuEoJrDyH48S0v8EblT9d1v7RN7x_eJwgNIP27mUjKHaAA8oOGIu42S8FNuDwd0XVLQkWdnIey8TTbknWZgraqpBIFv7AmvNppDC9wIVFNsYyEyC9TjwFZBDBPKl6QypMj9D1W2_Qwwkxf5XeBVnfpCWoWPNYuIbP047iTZRiPRXnED-jVs77iQMZoRtd0UuYeNmuxolTUTMi4riXT7uK4JexnDEmzgtLMaakwVle8wl3Wfa2N53fNvZhBGMg4jiA'
+            var getStockProducts = {
+                method: 'get',
+                url: 'https://rest.contabilium.com/api/inventarios/getStockByDeposito?id=28277&page=1',
+                headers: { 
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': `Bearer ${token}`,
+                },
+            };
+        let primeraproducts = await axios(getStockProducts)
+
+        for(let i = 1; i <= Math.ceil(primeraproducts.data.TotalItems / primeraproducts.data.TotalPage ); i++){
+            let token = 'NincVTNhVt7h0ytO_BeS4CBBtBSqxWvqlfPG11SX7ixiiuv9jw3QLEL15umzc_aoZzCox133Mz54VWBX0LIIj0o2iIbAe33-XpBRHY6GgoB4R4ovRsevI6pFGmj0MmcoBxOINfGj1hzfLuFLlDZdsk_b1iXy7N4VRQoWMLGl2UNYUgA_6ijQmVfauskbZfBevpflzGVL8Zgz8dIyU90cE07T23v3LuxVbNy9saQSmSRrsvvv9X4f-zejg3LBIuxkSRQb7K93WoHKo2ZszBz6i1Pr6Qw-pW0JiBpFZ1OPk17lpbUuJ3OW4WsG3JureB0x66JFQjP32GpwmtNHXt6vkBuEoJrDyH48S0v8EblT9d1v7RN7x_eJwgNIP27mUjKHaAA8oOGIu42S8FNuDwd0XVLQkWdnIey8TTbknWZgraqpBIFv7AmvNppDC9wIVFNsYyEyC9TjwFZBDBPKl6QypMj9D1W2_Qwwkxf5XeBVnfpCWoWPNYuIbP047iTZRiPRXnED-jVs77iQMZoRtd0UuYeNmuxolTUTMi4riXT7uK4JexnDEmzgtLMaakwVle8wl3Wfa2N53fNvZhBGMg4jiA'
             var getStockProducts = {
                 method: 'get',
                 url: 'https://rest.contabilium.com/api/inventarios/getStockByDeposito?id=28277'+ '&page='+ i,
@@ -41,7 +53,8 @@ const getProducts = async (req, res) => {
                 },
             };
             const products = await axios(getStockProducts)
-            let arr = products.data.Items.map( e =>{ return {"Id":e.Id,"Codigo":e.Codigo}})
+
+            let arr = products.data.Items.map( e =>{ return {"Id": e.Id.toString(),"Codigo":e.Codigo,"Stock Actual": e.StockActual.toString(), 'Stock con Reservas': e.StockConReservas.toString()}})
             productsTotal.push(...arr)
         }
         converter.json2csv(productsTotal, (err, csv) => {
