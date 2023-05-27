@@ -13,10 +13,10 @@ let initiGoogleSheets = async () => {
         "\n"
       ),
     });
-    
     await doc.updateProperties({ title: "Productos en Stock" });
     return doc;
   } catch (err) {
+    console.log(err)
     return false;
   }
 };
