@@ -49,15 +49,17 @@ const getProductosAndToken = async (token) => {
         let primeraproducts = await axios(getStockProducts);
         return primeraproducts
     } catch (err) {
-        if(err.response.status === 401) {
-            let newToken = await axios(config).then(function (response) {
-                console.log(response);
-                return JSON.stringify(response.data.access_token);
-            });
-            getProductosAndToken(newToken);
-        } else {
-            return false;
-        }
+        // if(err.response.status === 401) {
+        //     let newToken = await axios(config).then(function (response) {
+        //         console.log(response);
+        //         return JSON.stringify(response.data.access_token);
+        //     });
+        //     getProductosAndToken(newToken);
+        // } else {
+        //     return false;
+        // }
+        console.log(err);
+        return false
     }
 };
 
