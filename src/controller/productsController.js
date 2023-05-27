@@ -36,24 +36,26 @@ var config = {
   data: data,
 };
 
-const getProductosAndToken = async (token) => {
+var token = ''
+
+const getProductosAndToken = async (tk) => {
     try {
         var getStockProducts = {
           method: "get",
           url: "https://rest.contabilium.com/api/inventarios/getStockByDeposito?id=28277&page=1",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${tk ? tk : token}`,
           },
         };
+        console.log(tk);
         let primeraproducts = await axios(getStockProducts);
         return primeraproducts
     } catch (err) {
-        if(err.response.statusCode === 401) {
-            let newToken = await axios(config).then(function (response) {
-                return JSON.stringify(response.data.access_token);
-            });
-            getProductosAndToken(newToken);
+        if(err.response.status === 401) {
+            let newToken = await axios(config)
+            let nuevoToken = await getProductosAndToken(newToken.data.access_token);
+            return nuevoToken
         } else {
             return false;
         }
@@ -66,10 +68,11 @@ const getProducts = async (req, res) => {
     const sheet = await doc.sheetsByIndex[0];
     await sheet.clearRows()
 
-    let token = 'qf-h2yn_Y0tgZ4NEWDHi62VdoOT-8ZmqVx-lt3Kd6bstnWavOXa2GhujTZSvGHrwmJJbt1TWitqV8dOOurujoDhIhi_GONzQVHkkUe7hpV9SMP_XImCS3jympISn4PdkpeNDY6FC_bsBVSY7tZqajOGUCigUx6Jro9V0kUMyXcxVVZ7zIIWNGv3zhexha374XmBLBrRzWycRaC-pbMQAXSgrbVYWgCTSMBbLiw510ycHgdgBbnh7yF6WbWDABOtacBWJVdMfgHEKqHYwfxQcPGXLHtvHEJhrmO1QDSmXNLu3TbES5T9JcWTtkW82Ub3rep5IQ2S9R_tuYPgc0gw8vNIysgcEZQbH55_4DPZ9UaEA217vWqEYOPg9cfT5OYeQZ4z7fouPsfy81F4O7LIVHwuWZbEqi0gQmB2jNZGbcm1M0XIGMy00XHUOzZLrC5whUHTUWjmt6hKXm95vZH3wUaU-4IzXYf3Jc9OoWqY1PCsBk5ujdwo_3WACrrxK3J554JN6vRK7iyFzXxauGr-1w8hnhNt77fGO7i9dxBMCoIVNaeNCDilNmzsOFVn1lJDnCDGvy3CDo2ZpBgDrgh0DnA'
+    let newtoken = await axios(config)
+    token = newtoken.data.access_token
+
     let primeraproducts = await getProductosAndToken(token)
-    if (doc && primeraproducts) {
-    //   const token = await getToken();
+    if (doc) {
             for (
               let i = 1;
               i <=
@@ -86,11 +89,10 @@ const getProducts = async (req, res) => {
                     i,
                     headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
-                    Authorization: `Bearer qf-h2yn_Y0tgZ4NEWDHi62VdoOT-8ZmqVx-lt3Kd6bstnWavOXa2GhujTZSvGHrwmJJbt1TWitqV8dOOurujoDhIhi_GONzQVHkkUe7hpV9SMP_XImCS3jympISn4PdkpeNDY6FC_bsBVSY7tZqajOGUCigUx6Jro9V0kUMyXcxVVZ7zIIWNGv3zhexha374XmBLBrRzWycRaC-pbMQAXSgrbVYWgCTSMBbLiw510ycHgdgBbnh7yF6WbWDABOtacBWJVdMfgHEKqHYwfxQcPGXLHtvHEJhrmO1QDSmXNLu3TbES5T9JcWTtkW82Ub3rep5IQ2S9R_tuYPgc0gw8vNIysgcEZQbH55_4DPZ9UaEA217vWqEYOPg9cfT5OYeQZ4z7fouPsfy81F4O7LIVHwuWZbEqi0gQmB2jNZGbcm1M0XIGMy00XHUOzZLrC5whUHTUWjmt6hKXm95vZH3wUaU-4IzXYf3Jc9OoWqY1PCsBk5ujdwo_3WACrrxK3J554JN6vRK7iyFzXxauGr-1w8hnhNt77fGO7i9dxBMCoIVNaeNCDilNmzsOFVn1lJDnCDGvy3CDo2ZpBgDrgh0DnA`,
+                    Authorization:  `Bearer ${token}`,
                     },
                 };
                 const products = await axios(getStockProducts);
-                if(i === 1) console.log("Productos ",products.data);
                 let arregloPorFila = products.data.Items.map((e) => {
                     return {
                         'Id': e.Id,
