@@ -51,6 +51,7 @@ const getProductosAndToken = async (token) => {
     } catch (err) {
         if(err.response.status === 401) {
             let newToken = await axios(config).then(function (response) {
+                console.log(response);
                 return JSON.stringify(response.data.access_token);
             });
             getProductosAndToken(newToken);
@@ -90,7 +91,7 @@ const getProducts = async (req, res) => {
                 },
             };
             const products = await axios(getStockProducts);
-
+            if(i === 1) console.log("Productos ",products.data);
             let arregloPorFila = products.data.Items.map((e) => {
                 return {
                     'Id': e.Id,
